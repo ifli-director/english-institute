@@ -1,31 +1,145 @@
 "use client";
-import { ArrowRight, BookOpenCheck, LockKeyhole, PlayCircle } from "lucide-react";
+import { useMemo } from "react";
+import { CheckCircle, FileText, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import sampleImage from "../../public/freeS.png";
 import { SAMPLE_CLASSROOM_URL } from "@/lib/site";
 
+const fadeInUp = {
+  initial: { opacity: 0, y: 60 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.6, ease: "easeOut" },
+};
+
+const benefits = [
+  { icon: FileText, text: "Join a sample IFLI Google Classroom" },
+  { icon: Sparkles, text: "1h recording of a sample session" },
+  { icon: CheckCircle, text: "A taste of our digital library" },
+];
+
 export default function LeadMagnetSection() {
+  const particlePositions = useMemo(
+    () =>
+      Array.from({ length: 10 }, (_, i) => ({
+        left: `${(i * 13.7 + 23) % 100}%`,
+        top: `${(i * 17.3 + 15) % 100}%`,
+        duration: 3 + (i % 3),
+        delay: (i % 5) * 0.4,
+      })),
+    []
+  );
+
   return (
-    <section id="free-resources" className="bg-surface px-5 py-20 sm:py-24 lg:px-8">
-      <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] border border-line bg-white lg:grid-cols-[1fr_.85fr]">
-        <div className="bg-brand-blue p-7 text-white sm:p-10 lg:p-14">
-          <p className="font-bold text-brand-red">Free plan</p>
-          <h2 className="mt-3 text-4xl font-extrabold tracking-[-0.04em]">See how IFLI learning feels.</h2>
-          <p className="mt-5 leading-7 text-white/80">Get instant access to a sample Google Classroom before you choose a paid plan.</p>
-          <ul className="mt-8 space-y-5">{[[PlayCircle, "A one-hour sample class recording"], [BookOpenCheck, "A taste of the digital library"], [LockKeyhole, "No payment and no commitment"]].map(([Icon, text]) => <li key={text} className="flex items-center gap-3"><Icon className="size-6 text-brand-red" aria-hidden="true" /><span className="font-semibold">{text}</span></li>)}</ul>
-        </div>
-        <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-14">
-          <h3 className="text-2xl font-extrabold text-brand-blue-dark">Open your sample classroom</h3>
-          <p className="mt-2 text-sm leading-6 text-brand-blue-muted">Join our sample Google Classroom in one click. No sign-up form, no payment.</p>
-          <a
-            href={SAMPLE_CLASSROOM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-brand-red px-6 font-bold text-white hover:bg-brand-red-dark"
-          >
-            Open the sample classroom
-            <ArrowRight className="size-5" aria-hidden="true" />
-          </a>
-          <p className="mt-4 text-xs leading-5 text-brand-blue-muted">You will need a Google account to join the classroom.</p>
-        </div>
+    <section
+      id="free-resources"
+      className="relative overflow-hidden bg-linear-to-br from-brand-blue via-[#011a55] to-brand-blue-dark px-6 py-24 text-white md:py-32"
+    >
+      {/* Soft animated background */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute right-10 top-20 h-64 w-64 rounded-full bg-white/5 blur-3xl"
+          animate={{ scale: [1, 1.2, 1], x: [0, 30, 0] }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-20 left-10 h-96 w-96 rounded-full bg-brand-red/10 blur-3xl"
+          animate={{ scale: [1, 1.3, 1], x: [0, -40, 0] }}
+          transition={{ duration: 10, repeat: Infinity }}
+        />
+        {particlePositions.map((particle, i) => (
+          <motion.div
+            key={i}
+            className="absolute h-2 w-2 rounded-full bg-white/20"
+            style={{ left: particle.left, top: particle.top }}
+            animate={{ y: [0, -20, 0], opacity: [0.2, 0.5, 0.2] }}
+            transition={{ duration: particle.duration, repeat: Infinity, delay: particle.delay }}
+          />
+        ))}
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-6xl">
+        <motion.div {...fadeInUp}>
+          <div className="relative overflow-hidden rounded-[2rem] bg-white p-10 shadow-[0px_30px_50px_-12px_rgba(0,0,0,0.30),0px_15px_30px_-12px_rgba(0,0,0,0.18)] md:p-16">
+            <div className="grid items-center gap-12 md:grid-cols-2">
+              {/* Left: text and button */}
+              <div className="order-2 md:order-1">
+                <motion.div
+                  className="mb-6 inline-flex items-center gap-2 rounded-full bg-brand-red-pale px-4 py-2 text-brand-red"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <Sparkles className="h-4 w-4" aria-hidden="true" />
+                  <span className="text-sm font-bold">FREE Resources</span>
+                </motion.div>
+
+                <h2 className="mb-6 text-3xl font-extrabold tracking-[-0.04em] text-brand-blue-dark md:text-4xl lg:text-5xl">
+                  Get INSTANT Access to FREE SAMPLE RESOURCES
+                </h2>
+
+                <p className="mb-6 text-lg leading-relaxed text-brand-blue-muted">
+                  See how IFLI will help you speak English confidently, no commitment, just value.
+                </p>
+
+                <ul className="mb-8 space-y-3">
+                  {benefits.map(({ icon: Icon, text }, index) => (
+                    <motion.li
+                      key={text}
+                      className="flex items-center gap-3"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 + index * 0.1 }}
+                    >
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-red-pale">
+                        <Icon className="h-4 w-4 text-brand-red" aria-hidden="true" />
+                      </span>
+                      <span className="font-semibold text-brand-blue-dark">{text}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+
+                <motion.a
+                  href={SAMPLE_CLASSROOM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-14 w-full items-center justify-center rounded-full bg-brand-red px-6 py-4 text-base font-bold text-white shadow-lg transition-colors hover:bg-brand-red-dark"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Join Your Sample IFLI Google Classroom
+                </motion.a>
+              </div>
+
+              {/* Right: photo */}
+              <div className="order-1 md:order-2">
+                <motion.div
+                  className="relative"
+                  initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
+                  whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.7, ease: "easeOut" }}
+                  whileHover={{ scale: 1.05, rotate: 2 }}
+                >
+                  <motion.div
+                    className="absolute -inset-4 rounded-3xl bg-linear-to-r from-brand-blue to-brand-red opacity-20 blur-2xl"
+                    animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.3, 0.2] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  />
+                  <Image
+                    src={sampleImage}
+                    alt="IFLI learners joining a sample class"
+                    sizes="(min-width: 768px) 384px, 90vw"
+                    className="relative z-10 mx-auto w-full max-w-sm rounded-2xl drop-shadow-2xl"
+                  />
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
