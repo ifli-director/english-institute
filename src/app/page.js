@@ -79,9 +79,6 @@ export default function Home() {
     window.open(ENROLL_URL, "_blank", "noopener,noreferrer");
   };
 
-  const handleLeadMagnetSubmit = (data) => {
-    console.log('Lead magnet submitted:', data);
-  };
 
   return (
     <div className="min-h-screen">
@@ -97,7 +94,7 @@ export default function Home() {
         <PricingSection onSelectPlan={() => handleEnrollClick()} />
         <TestimonialsSection />
         <UpcomingEventsSection />
-        <LeadMagnetSection onSubmit={handleLeadMagnetSubmit} />
+        <LeadMagnetSection />
         <Experiences2026Section />
         <FAQSection />
         <LisbonProject />
