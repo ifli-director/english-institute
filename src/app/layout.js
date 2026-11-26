@@ -9,7 +9,7 @@ const description = `Build confident, practical English in ${COURSE.duration}: $
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: "IFLI English Immersion | Live online English course", template: "%s | IFLI English Immersion" },
+  title: { default: "IFLI · Learn English", template: "%s | IFLI English Immersion" },
   description,
   keywords: ["English immersion course", "online English classes", "intensive English course", "live English lessons", "English conversation course", "IFLI English"],
   authors: [{ name: "IFLI - Foreign Language Immersion" }],
